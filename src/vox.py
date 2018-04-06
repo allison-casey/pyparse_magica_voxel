@@ -1,5 +1,4 @@
 import vox_parser, os
-import numpy as np
 
 class Vox(object):
 
@@ -18,46 +17,46 @@ class Vox(object):
             raise ValueError('Invalid file path.')
         vox_dict = vox_parser.read_vox(file_path)
         self.__dimensions = vox_dict['MAIN']['SIZE']['dimensions']
-        self.__voxels = np.array(vox_dict['MAIN']['XYZI']['voxels'])
-        self.__palette = np.array(vox_dict['MAIN']['RGBA']['paletteId'])
+        self.__voxels = vox_dict['MAIN']['XYZI']['voxels']
+        self.__palette = vox_dict['MAIN']['RGBA']['paletteId']
     
-    def get_rgb(self, vox_index):
+    def get_rgba(self, vox_index):
         return self.__palette[self.__voxels[vox_index][3] - 1]
-
+    
     def get_palette_id(self, index):
         return self.__voxels[index][3]
-
+    
     def voxel(self, index):
         return self.__voxels[index]
-
+    
     @property
-    def get_voxels(self):
+    def voxels(self):
         return self.__voxels
-
+    
     @property
     def coords(self):
-        return self.__voxels[:,0:3]
-
+        return [(c[0], c[1], c[2]) for c in self.__voxels]
+    
     @property
     def xs(self):
-        return self.__voxels[:,0]
-
+        return [c[0] for c in self.__voxels]
+    
     @property
     def ys(self):
-        return self.__voxels[:,1]
-
+        return [c[1] for c in self.__voxels]
+    
     @property
     def zs(self):
-        return self.__voxels[:,2]
+        return [c[2] for c in self.__voxels]
     
     @property
     def color_indices(self):
-        return self.__voxels[:,3]
+        return [c[3] for c in self.__voxels]
     
     @property
     def count(self):
-        return self.__voxels.shape[0]
-
+        return len(self.__voxels)
+    
     @property
     def size(self):
         return self.__dimensions[0] * self.__dimensions[1] * self.__dimensions[2]
@@ -65,3 +64,8 @@ class Vox(object):
 
 if __name__ == '__main__':
     pass
+
+
+
+
+
