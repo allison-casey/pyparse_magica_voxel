@@ -1,2 +1,2 @@
-# pyparse_magica_voxel
+# Pyparse Magica Voxel
 Python parser for MagicaVoxel .vox format
