@@ -72,7 +72,7 @@ def read_vox(file):
 
         # skips the following chunks bcause they do not contain any
         # relevant information for the blueprint_reader
-        _SKIP_CHUNKS = ['nSHP', 'LAYR', 'MATL', 'rOBJ']
+        _SKIP_CHUNKS = ['LAYR', 'MATL', 'rOBJ']
         
         chunk = {}
 
@@ -131,6 +131,19 @@ def read_vox(file):
                 group_node[node_id]['childIds'].append(read_int())
             chunk[chunk_id] = group_node
 
+        elif chunk_id == 'nSHP':
+            shape_node = decoded_vox['MAIN'][chunk_id] \
+                    if chunk_id in decoded_vox['MAIN'] else {}
+            
+            shape_id = read_int()
+            shape_node[shape_id] = {}
+            shape_node[shape_id]['nodeAttributes'] = read_dict()
+            shape_node[shape_id]['models'] = []
+            for _ in range(read_int()):
+                shape_node[shape_id]['models'].append({'id': read_int(), 'attributes': read_dict()})
+            chunk[chunk_id] = shape_node
+
+            
         # Skip unimplemented chunks
         elif chunk_id in _SKIP_CHUNKS:
             f.read(chunk_content + chunk_children)
