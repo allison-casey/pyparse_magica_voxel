@@ -1,0 +1,79 @@
+{
+    "magica" : "VOX ",
+    "version" : 0,
+    "MAIN" : {
+	"numModels": 0,
+	"models": [
+	    {
+		"id": 0,
+		"SIZE": {
+		    "x": 0,
+		    "y": 0,
+		    "z": 0
+		},
+		"XYZI": [
+		    [0, 0, 0, 0],
+		    [0, 0, 0, 0]
+		]
+	    }
+	],
+	"RGBA": [
+	    [0, 0, 0, 0],
+	    [0, 0, 0, 0]
+	],
+	"MATL": [
+	    {
+		"_type": "str",
+		"_weight": 0,
+		"_rought": 0,
+		"_spec": 0,
+		"_ior": 0,
+		"_att": 0,
+		"_flux": 0,
+		"_glow": 0,
+		"_unit": 0,
+		"_plastic": 0
+	    }
+	],
+	"SCEN": [
+	    {
+		"type": "nTRN",
+		"id": 0,
+		"nodeAttributes": {
+		    "_name": "str",
+		    "_hidden": 0
+		},
+		"reservedId": -1,
+		"layerId": 0,
+		"frames": [
+		    {
+			"_r": 0,
+			"_t": [0,0,0]
+		    }
+		],
+		"childId": 0
+	    },
+	    {
+		"type": "nGRP",
+		"id": 0,
+		"attributes": {
+		    "_name": "str",
+		    "_hidden": 0
+		},
+		"childIds": [ 0, 0 ]
+	    }, 
+	    {
+		"type": "nSHP",
+		"id": 0,
+		"attributes": {
+		    "_name": "str",
+		    "_hidden": 0
+		},
+		"models": {
+		    "id": 0,
+		    "attributes": {}
+		}
+	    }
+	]
+    }
+}

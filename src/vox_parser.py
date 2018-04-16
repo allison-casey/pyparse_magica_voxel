@@ -37,9 +37,14 @@ def read_vox(file):
 
     def read_dict():
         dictionary = {}
-        for _ in range(read_int()):
+        num_pairs = read_int()
+        for _ in range(num_pairs):
             key = read_str(read_int())
             val = read_str(read_int())
+            try:
+                val = float(val)
+            except ValueError:
+                pass
             dictionary[key] = val                                   
         return dictionary
 
@@ -86,6 +91,7 @@ def read_vox(file):
         # SIZE contains the dimensions of the model
         if chunk_id == 'SIZE':
             chunk[chunk_id]['dimensions'] = (read_int(), read_int(), read_int())
+            return {}
         # XYZI contains the number of voxels and the (X, Y, Z, colorIndex)
         # for each voxel.
         elif chunk_id == 'XYZI':
@@ -142,7 +148,10 @@ def read_vox(file):
             for _ in range(read_int()):
                 shape_node[shape_id]['models'].append({'id': read_int(), 'attributes': read_dict()})
             chunk[chunk_id] = shape_node
-
+        
+        elif chunk_id == 'MATL':
+            chunk[chunk_id]['materialId'] = read_int()
+            chunk[chunk_id]['materialProperties'] = read_dict()
             
         # Skip unimplemented chunks
         elif chunk_id in _SKIP_CHUNKS:
@@ -156,6 +165,12 @@ def read_vox(file):
     decoded_vox['version'] = read_int()
     # read root chunk MAIN
     decoded_vox.update(read_main()) 
+    decoded_vox['MAIN']['SIZE'] = {}
+    decoded_vox['MAIN']['XYZI'] = {}
+    decoded_vox['MAIN']['SCNE'] = {}
+    decoded_vox['MAIN']['RGBA'] = []
+    decoded_vox['MAIN']['MATL'] = []
+    decoded_vox['MAIN']['LAYR'] = []
     # read child chunks
     while f.tell() <= decoded_vox['MAIN']['children']:
         decoded_vox['MAIN'].update(read_chunk())
@@ -167,8 +182,7 @@ def convert_to_json(file_in, file_out):
 
     Keyword Arguments:
     file_in -- Path of input file
-    file_out -- Path of output file    
-    """
+    file_out -- Path of output file    """
     if file_in is None or "":
         raise ValueError('Invalid file input.')
     if file_out is None or "":
@@ -180,7 +194,7 @@ def convert_to_json(file_in, file_out):
 if __name__ == "__main__":
     import pprint
     pp = pprint.PrettyPrinter(indent=4)
-    v1 = read_vox('../vox/3x3x3.vox')
+    v1 = read_vox('../vox/2x2x2_materials.vox')
     pp.pprint(v1)
 
 
